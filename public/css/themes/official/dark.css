@@ -19,7 +19,6 @@ body {
 
 nav {
 	background: var(--bg-light);
-	border-bottom: 1px solid var(--bg-dark);
 	box-shadow: 0px 4px 4px #00000030, 0px 12px 12px #00000015;
 }
 
@@ -31,9 +30,139 @@ nav {
 	color: var(--accent);
 }
 
-.title {
+.content {
 	color: var(--text);
 	text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--accent),
 		0 0 20px var(--accent), 0 0 25px var(--accent), 0 0 30px var(--accent),
 		0 0 35px var(--accent);
+}
+
+.firefly-bg {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	pointer-events: none;
+	z-index: -1;
+}
+
+.firefly {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: radial-gradient(
+		circle at 60% 40%,
+		var(--accent) 0%,
+		hsla(262, 47%, 63%, 0.85) 65%,
+		hsla(262, 47%, 63%, 0.35) 100%
+	);
+	box-shadow: 0 0 20px 8px var(--accent), 0 0 50px 30px hsla(262, 47%, 63%, 0.5);
+	opacity: 0.92;
+	will-change: transform, opacity;
+	pointer-events: none;
+	animation: fly 24s linear infinite, flicker 5s infinite alternate;
+}
+
+.firefly:nth-child(1) {
+	left: 6vw;
+	top: 17vh;
+	animation-delay: -2s, -1.2s;
+}
+.firefly:nth-child(2) {
+	left: 18vw;
+	top: 64vh;
+	animation-delay: -7s, -4.9s;
+}
+.firefly:nth-child(3) {
+	left: 71vw;
+	top: 37vh;
+	animation-delay: -13s, -3.1s;
+}
+.firefly:nth-child(4) {
+	left: 86vw;
+	top: 14vh;
+	animation-delay: -3s, -2.7s;
+}
+.firefly:nth-child(5) {
+	left: 11vw;
+	top: 81vh;
+	animation-delay: -12s, -1.9s;
+}
+.firefly:nth-child(6) {
+	left: 51vw;
+	top: 60vh;
+	animation-delay: -15s, -0.7s;
+}
+.firefly:nth-child(7) {
+	left: 67vw;
+	top: 23vh;
+	animation-delay: -5s, -2.3s;
+}
+.firefly:nth-child(8) {
+	left: 26vw;
+	top: 54vh;
+	animation-delay: -11s, -3.6s;
+}
+.firefly:nth-child(9) {
+	left: 91vw;
+	top: 70vh;
+	animation-delay: -9s, -4.2s;
+}
+.firefly:nth-child(10) {
+	left: 42vw;
+	top: 21vh;
+	animation-delay: -19s, -1.4s;
+}
+
+/* Floating and randomized flicker */
+@keyframes fly {
+	0% {
+		transform: translateY(0) translateX(0) scale(1);
+	}
+	15% {
+		transform: translateY(-11vh) translateX(7vw) scale(1.08);
+	}
+	28% {
+		transform: translateY(8vh) translateX(-13vw) scale(0.98);
+	}
+	42% {
+		transform: translateY(-5vh) translateX(5vw) scale(1.18);
+	}
+	64% {
+		transform: translateY(12vh) translateX(9vw) scale(0.87);
+	}
+	78% {
+		transform: translateY(-9vh) translateX(-3vw) scale(1.12);
+	}
+	100% {
+		transform: translateY(0) translateX(0) scale(1);
+	}
+}
+
+/* Random, slow, organic flicker for each firefly */
+@keyframes flicker {
+	0%,
+	100% {
+		opacity: 0.82;
+	}
+	10% {
+		opacity: 0.98;
+	}
+	22% {
+		opacity: 0.66;
+	}
+	33% {
+		opacity: 0.93;
+	}
+	60% {
+		opacity: 0.64;
+	}
+	70% {
+		opacity: 1;
+	}
+	87% {
+		opacity: 0.6;
+	}
 }
