@@ -5,11 +5,15 @@ Author: Lonely Corporation Team
 
 :root {
 	--bg-dark: hsl(0, 0%, 0%);
+	--bg-mid-dark: hsl(0, 0%, 7%);
 	--bg: hsl(0, 0%, 5%);
+	--bg-mid-light: hsl(0, 0%, 15%);
 	--bg-light: hsl(0, 0%, 10%);
 	--text: hsl(0, 0%, 90%);
 	--text-muted: hsl(0, 0%, 75%);
 	--accent: hsl(262, 47%, 63%);
+	--accent-dark: hsla(262, 47%, 50%, 0.185);
+	--accent-muted: hsla(262, 47%, 50%, 0.3);
 }
 
 body {
@@ -45,4 +49,31 @@ nav {
 		hsla(262, 47%, 63%, 0.35) 100%
 	);
 	box-shadow: 0 0 20px 8px var(--accent), 0 0 50px 30px hsla(262, 47%, 63%, 0.5);
+}
+
+.taskbar-container {
+	background-color: var(--bg-mid-dark);
+	border: 1px solid var(--accent-dark);
+	box-shadow: 0 8px 32px var(--bg);
+}
+
+.taskbar-container:hover {
+	border-color: var(--accent-muted);
+	box-shadow: 0 12px 48px var(--bg-light);
+}
+
+.taskbar-button {
+	color: rgba(255, 255, 255, 0.8);
+}
+
+.taskbar-button:hover {
+	background-color: var(--accent-dark);
+	color: rgba(255, 255, 255, 1);
+	border-color: var(--accent-dark);
+}
+
+#gameContainer {
+	background-color: var(--bg);
+	border: 1px solid var(--accent-dark);
+	box-shadow: 0 4px 32px var(--bg-light);
 }
