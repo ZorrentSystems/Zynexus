@@ -77,3 +77,73 @@ nav {
 	border: 1px solid var(--accent-dark);
 	box-shadow: 0 4px 32px var(--bg-light);
 }
+
+/* Proxy */
+.proxy-body .content {
+	color: var(--text);
+}
+
+#tab-bar {
+	border-bottom-color: var(--accent-dark);
+}
+
+#tabs-list::-webkit-scrollbar-thumb {
+	background: var(--accent-muted);
+}
+
+.tab {
+	border-color: var(--accent-dark);
+	color: var(--text-muted);
+}
+
+.tab:hover {
+	background-color: var(--accent-dark);
+	color: var(--text);
+}
+
+.tab.active {
+	background-color: var(--accent-muted);
+	color: var(--text);
+	border-color: var(--accent-muted);
+}
+
+.tab-close {
+	color: var(--text-muted);
+}
+
+.tab-close:hover {
+	background-color: rgba(255, 0, 0, 0.2);
+	color: var(--text);
+}
+
+#new-tab-btn {
+	border-color: var(--accent-dark);
+	color: var(--text-muted);
+}
+
+#new-tab-btn:hover {
+	background-color: var(--accent-dark);
+	color: var(--text);
+	border-color: var(--accent-muted);
+}
+
+#url-bar {
+	background-color: var(--bg-mid-light);
+	border-color: var(--accent-muted);
+	color: var(--text);
+}
+
+#url-bar::placeholder {
+	color: var(--text-muted);
+}
+
+#url-bar:focus {
+	background-color: var(--bg-light);
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px var(--accent-dark);
+}
+
+#tab-contents {
+	background-color: var(--bg);
+	border-color: var(--accent-dark);
+}
