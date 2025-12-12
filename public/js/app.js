@@ -1,5 +1,3 @@
-// public/js/app.js  ←  FINAL WORKING VERSION (2025)
-
 const tabsList = document.getElementById("tabs-list");
 const tabContents = document.getElementById("tab-contents");
 const urlBar = document.getElementById("url-bar");
@@ -7,7 +5,7 @@ const newTabBtn = document.getElementById("new-tab-btn");
 
 let activeTab = null;
 
-function newTab(url = "https://google.com") {
+function newTab(url = "https://duckduckgo.com/") {
 	const tab = document.createElement("div");
 	tab.className = "tab active";
 	tab.innerHTML = `<span class="tab-title">New Tab</span><button class="tab-close">×</button>`;
