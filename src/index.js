@@ -88,7 +88,7 @@ fastify.setNotFoundHandler((req, reply) => {
 fastify.server.on("listening", () => {
 	const address = fastify.server.address();
 
-	console.log("🚀 Zynexus Proxy Server Listening on:");
+	console.log("Zynexus Listening on:");
 	console.log(`\thttp://localhost:${address.port}`);
 	console.log(`\thttp://${hostname()}:${address.port}`);
 	console.log(
