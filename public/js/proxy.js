@@ -4,47 +4,119 @@ const urlBar = document.getElementById("url-bar");
 const newTabBtn = document.getElementById("new-tab-btn");
 
 let activeTab = null;
+let scramjet = null;
+let connection = null;
 
-function newTab(url = "https://duckduckgo.com/") {
-	const tab = document.createElement("div");
-	tab.className = "tab active";
-	tab.innerHTML = `<span class="tab-title">New Tab</span><button class="tab-close">×</button>`;
-	tabsList.appendChild(tab);
+const { ScramjetController } = $scramjetLoadController();
 
-	const content = document.createElement("div");
-	content.className = "tab-content active";
-	content.innerHTML = `
-    <iframe src="/~/scramjet/${encodeURIComponent(url)}" 
-            class="proxy-frame"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads"
-            loading="lazy">
-    </iframe>`;
-	tabContents.appendChild(content);
+scramjet = new ScramjetController({
+	files: {
+		wasm: '/scram/scramjet.wasm.wasm',
+		all: '/scram/scramjet.all.js',
+		sync: '/scram/scramjet.sync.js',
+	},
+});
 
-	const iframe = content.querySelector("iframe");
-	const titleSpan = tab.querySelector(".tab-title");
+scramjet.init();
+connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 
-	// Update tab title when page loads
-	iframe.onload = () => {
+// Wait for BareMux to be ready before using it
+async function waitForBareMux(timeout = 5000) {
+	const startTime = Date.now();
+	while (Date.now() - startTime < timeout) {
 		try {
-			const docTitle = iframe.contentDocument?.title || "Untitled";
-			titleSpan.textContent = docTitle.slice(0, 25);
-		} catch (e) {
-			titleSpan.textContent = "Protected";
+			await connection.getTransport();
+			return true;
+		} catch (err) {
+			await new Promise(resolve => setTimeout(resolve, 100));
 		}
-	};
+	}
+	throw new Error('BareMux initialization timeout');
+}
 
-	// Tab click = switch
-	tab.onclick = (e) => {
-		if (e.target.classList.contains("tab-close")) {
-			e.stopPropagation();
-			closeTab(tab);
+async function newTab(url = "http://example.com") {
+	try {
+		await waitForBareMux();
+
+		if (!navigator.serviceWorker.controller) {
+			await navigator.serviceWorker.register('/scramjet.sw.js', {
+				scope: '/',
+			});
+			await new Promise(resolve => setTimeout(resolve, 500));
+		}
+
+		const currentTransport = await connection.getTransport();
+		if (currentTransport !== "/epoxy/index.mjs") {
+			let wispUrl =
+				(location.protocol === "https:" ? "wss" : "ws") +
+				"://" +
+				location.host +
+				"/wisp/";
+			await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
+		}
+
+		// Now create the tab UI
+		const tab = document.createElement("div");
+		tab.className = "tab active";
+		const tabId = `tab-${Date.now()}`;
+		tab.id = tabId;
+		tab.innerHTML = `<span class="tab-title">Loading...</span><button class="tab-close">×</button>`;
+		tabsList.appendChild(tab);
+
+		const content = document.createElement("div");
+		content.className = "tab-content active";
+		content.id = `content-${tabId}`;
+		tabContents.appendChild(content);
+
+		const titleSpan = tab.querySelector(".tab-title");
+
+		// Create Scramjet frame
+		const frame = scramjet.createFrame();
+		frame.frame.id = `sj-frame-${Date.now()}`;
+		frame.frame.classList.add("proxy-frame");
+		content.appendChild(frame.frame);
+
+		console.log(`Created frame for tab: ${tabId}`);
+
+		tab.__frame = frame;
+		tab.__frameElement = frame.frame;
+
+		frame.frame.addEventListener("load", () => {
+			try {
+				const docTitle = frame.frame.contentDocument?.title || "Untitled";
+				titleSpan.textContent = docTitle.slice(0, 25);
+			} catch (e) {
+				titleSpan.textContent = "Protected";
+			}
+		});
+
+		// Tab click = switch
+		tab.onclick = (e) => {
+			if (e.target.classList.contains("tab-close")) {
+				e.stopPropagation();
+				closeTab(tab);
+			} else {
+				switchTab(tab);
+			}
+		};
+
+		switchTab(tab);
+		frame.go(url);
+	} catch (err) {
+		console.error("Error creating tab:", err);
+		// Show error in UI
+		const errorDiv = document.createElement('div');
+		errorDiv.style.cssText = 'color: red; padding: 20px; font-family: monospace; white-space: pre-wrap;';
+		errorDiv.innerHTML = `<h2>⚠ Tab Error</h2><code>${err.message}\n\n${err.stack}</code>`;
+		
+		if (document.querySelector(".tab-content.active")) {
+			const errorContent = document.querySelector(".tab-content.active");
+			errorContent.innerHTML = '';
+			errorContent.appendChild(errorDiv);
 		} else {
-			switchTab(tab);
+			document.body.appendChild(errorDiv);
 		}
-	};
-
-	switchTab(tab);
+	}
 }
 
 function switchTab(tabEl) {
@@ -62,10 +134,6 @@ function switchTab(tabEl) {
 	tabEl.classList.add("active");
 	const index = Array.from(tabsList.children).indexOf(tabEl);
 	tabContents.children[index].classList.add("active");
-
-	// Sync URL bar
-	const src = tabContents.children[index].querySelector("iframe").src;
-	urlBar.value = decodeURIComponent(src.split("/~/")[1] || "");
 }
 
 function closeTab(tabEl) {
@@ -79,26 +147,44 @@ function closeTab(tabEl) {
 	}
 }
 
-// ——— URL BAR: PRESS ENTER = GO ———
-urlBar.addEventListener("keydown", (e) => {
-	if (e.key !== "Enter") return;
-	e.preventDefault();
+// Smart URL detection and normalization
+function normalizeURL(input) {
+	input = input.trim();
+	if (!input) return null;
 
-	let input = urlBar.value.trim();
-	if (!input) return;
-
-	// Smart URL detection
+	// Check if it's a search query (no dots, no slashes, no spaces at start)
 	if (!input.includes(".") && !input.includes(" ")) {
-		input = "https://www.google.com/search?q=" + encodeURIComponent(input);
-	} else if (!/^https?:\/\//i.test(input)) {
+		return "https://duckduckgo.com/?q=" + encodeURIComponent(input);
+	}
+
+	// Add https if no protocol
+	if (!/^https?:\/\//i.test(input)) {
 		input = "https://" + input;
 	}
 
-	// Load in current tab
-	document.querySelector(".tab-content.active iframe").src = `/~/scramjet/${input}`;
+	return input;
+}
+
+// URL BAR: PRESS ENTER = GO
+urlBar.addEventListener("keydown", async (e) => {
+	if (e.key !== "Enter") return;
+	e.preventDefault();
+
+	const url = normalizeURL(urlBar.value);
+	if (!url || !activeTab) return;
+
+	if (activeTab.__frame) {
+		activeTab.__frame.go(url);
+	}
 });
 
 // New tab button
 newTabBtn.onclick = () => newTab();
+
+window.addEventListener("DOMContentLoaded", () => {
+	setTimeout(() => {
+		newTab();
+	}, 500);
+});
 
 

@@ -1,8 +1,16 @@
-/// <reference lib="webworker" />
-import { ScramjetController } from "https://cdn.jsdelivr.net/gh/MercuryWorkshop/scramjet@latest/mod.ts";
+importScripts('/scram/scramjet.all.js');
 
-const controller = new ScramjetController({ prefix: "/~/" });
+const { ScramjetServiceWorker } = $scramjetLoadWorker();
+const scramjet = new ScramjetServiceWorker();
 
-self.addEventListener("fetch", (event) => {
-	event.respondWith(controller.fetch(event));
+async function handleRequest(event) {
+  await scramjet.loadConfig();
+  if (scramjet.route(event)) {
+    return scramjet.fetch(event);
+  }
+  return fetch(event.request);
+}
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(handleRequest(event));
 });
