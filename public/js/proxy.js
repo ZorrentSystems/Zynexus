@@ -14,7 +14,7 @@ function newTab(url = "https://duckduckgo.com/") {
 	const content = document.createElement("div");
 	content.className = "tab-content active";
 	content.innerHTML = `
-    <iframe src="/~/${encodeURIComponent(url)}" 
+    <iframe src="/~/scramjet/${encodeURIComponent(url)}" 
             class="proxy-frame"
             sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads"
             loading="lazy">
@@ -95,19 +95,10 @@ urlBar.addEventListener("keydown", (e) => {
 	}
 
 	// Load in current tab
-	document.querySelector(".tab-content.active iframe").src = `/~/${input}`;
+	document.querySelector(".tab-content.active iframe").src = `/~/scramjet/${input}`;
 });
 
 // New tab button
 newTabBtn.onclick = () => newTab();
 
-// ——— SERVICE WORKER (already in correct place) ———
-if ("serviceWorker" in navigator) {
-	navigator.serviceWorker
-		.register("/scramjet.sw.js")
-		.then(() => console.log("Scramjet SW registered"))
-		.catch((err) => console.error("SW failed:", err));
-}
 
-// Start with one tab
-newTab();
