@@ -34,7 +34,7 @@ async function waitForBareMux(timeout = 5000) {
 	throw new Error('BareMux initialization timeout');
 }
 
-async function newTab(url = "http://example.com") {
+async function newTab(url = "https://duckduckgo.com/") {
 	try {
 		await waitForBareMux();
 
