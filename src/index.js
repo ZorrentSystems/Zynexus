@@ -6,8 +6,6 @@ import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 
 // Disable certificate validation for self-signed certs (development only!)
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 import { scramjetPath } from "@mercuryworkshop/scramjet/path";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
