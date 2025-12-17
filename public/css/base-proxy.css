@@ -11,10 +11,6 @@
 	transition: all 0.3s ease;
 }
 
-.proxy-body .firefly-bg {
-	display: none;
-}
-
 #tab-bar {
 	display: flex;
 	align-items: center;
@@ -30,7 +26,7 @@
 	gap: 2px;
 	flex: 1;
 	overflow-x: auto;
-	scrollbar-width: thin;
+	scrollbar-width: none;
 }
 
 .tab {
@@ -42,14 +38,10 @@
 	gap: 8px;
 	border: 1px solid;
 	border-bottom: none;
-	white-space: nowrap;
 	font-size: 13px;
 	font-weight: 500;
 	user-select: none;
 	transition: all 0.2s ease;
-	position: relative;
-	background-color: transparent;
-	flex-shrink: 1;
 }
 
 .tab.active {
@@ -101,6 +93,7 @@
 	outline: none;
 	font-family: "JetBrains Mono", monospace;
 	transition: all 0.2s ease;
+	box-sizing: border-box;
 }
 
 #url-bar:focus {
