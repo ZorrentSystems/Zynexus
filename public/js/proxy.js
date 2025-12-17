@@ -57,14 +57,14 @@ async function newTab(url = "https://duckduckgo.com/") {
 
 		// Now create the tab UI
 		const tab = document.createElement("div");
-		tab.className = "tab active";
+		tab.className = "tab"; // No 'active' class
 		const tabId = `tab-${Date.now()}`;
 		tab.id = tabId;
 		tab.innerHTML = `<span class="tab-title">Loading...</span><button class="tab-close">×</button>`;
 		tabsList.appendChild(tab);
 
 		const content = document.createElement("div");
-		content.className = "tab-content active";
+		content.className = "tab-content"; // No 'active' class
 		content.id = `content-${tabId}`;
 		tabContents.appendChild(content);
 
@@ -120,20 +120,21 @@ async function newTab(url = "https://duckduckgo.com/") {
 }
 
 function switchTab(tabEl) {
-	activeTab = tabEl;
+	if (activeTab) {
+		activeTab.classList.remove("active");
+		const oldIndex = Array.from(tabsList.children).indexOf(activeTab);
+		if (tabContents.children[oldIndex]) {
+			tabContents.children[oldIndex].classList.remove("active");
+		}
+	}
 
-	// Deactivate all
-	document
-		.querySelectorAll(".tab")
-		.forEach((t) => t.classList.remove("active"));
-	document
-		.querySelectorAll(".tab-content")
-		.forEach((c) => c.classList.remove("active"));
-
-	// Activate clicked tab + content
 	tabEl.classList.add("active");
-	const index = Array.from(tabsList.children).indexOf(tabEl);
-	tabContents.children[index].classList.add("active");
+	const newIndex = Array.from(tabsList.children).indexOf(tabEl);
+	if (tabContents.children[newIndex]) {
+		tabContents.children[newIndex].classList.add("active");
+	}
+
+	activeTab = tabEl;
 }
 
 function closeTab(tabEl) {
