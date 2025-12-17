@@ -4,7 +4,8 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Zynexus - Proxy</title>
-		<link rel="stylesheet" href="css/base.css" id="base-styles" />
+		<link rel="stylesheet" href="css/base-proxy.css" id="base-styles" />
+		<link rel="stylesheet" href="css/base-taskbar.css"/>
 		<link
 			rel="stylesheet"
 			href="css/themes/official/dark.css"
@@ -21,7 +22,7 @@
 		<!-- Register service worker utility -->
 		<script src="/js/register-sw.js" defer></script>
 	</head>
-	<body class="proxy-body">
+	<body>
 		<div class="taskbar">
 			<div class="taskbar-container">
 				<a href="index.html" class="taskbar-button">
@@ -43,12 +44,10 @@
 			</div>
 		</div>
 		<div class="content">
-			<!-- Tab Bar -->
 			<div id="tab-bar">
 				<div id="tabs-list"></div>
 				<button id="new-tab-btn" title="New Tab">+</button>
 			</div>
-			<!-- URl bar -->
 			 <div class="url-bar">
 				<input
 					type="text"
@@ -56,7 +55,6 @@
 					placeholder="Search or enter address..."
 					autocomplete="off" />
 			</div>
-			<!-- Tab Contents -->
 			<div id="tab-contents"></div>
 		</div>
 		<script src="js/proxy.js" defer></script>
