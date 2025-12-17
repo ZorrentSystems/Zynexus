@@ -8,6 +8,7 @@
 			href="https://fonts.googleapis.com/css?family=Inter"
 			rel="stylesheet" />
 		<link rel="stylesheet" href="css/base.css" id="base-styles" />
+		<link rel="stylesheet" href="css/base-taskbar.css" id="base-styles" />
 		<link
 			rel="stylesheet"
 			href="css/themes/official/dark.css"
@@ -26,140 +27,32 @@
 					src="assets\images\game-icons/slope.png"
 					alt="Slope Game"
 					href="games/slope/slope.html" />
-				<h3>Slope</h3>
-				<p>
-					Roll down an endless slope, avoiding obstacles and getting as far as
-					you can!
-				</p>
-			</div>
-			<div class="game-card">
-				<img
-					src="assets/images/game-icons/2048.png"
-					alt="2048"
-					href="games/2048/2048.html" />
-				<h3>2048</h3>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id
-					sollicitudin velit. Maecenas dignissim convallis massa et aliquam.
-					Fusce mauris.
-				</p>
-			</div>
-			<div class="game-card">
-				<img
-					src="assets/images/game-icons/2048.png"
-					alt="2048"
-					href="games/2048/2048.html" />
-				<h3>game 3</h3>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id
-					sollicitudin velit. Maecenas dignissim convallis massa et aliquam.
-					Fusce mauris.
-				</p>
-			</div>
-			<div class="game-card">
-				<img
-					src="assets/images/game-icons/2048.png"
-					alt="2048"
-					href="games/2048/2048.html" />
-				<h3>game 4</h3>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id
-					sollicitudin velit. Maecenas dignissim convallis massa et aliquam.
-					Fusce mauris.
-				</p>
-			</div>
-			<div class="game-card">
-				<img
-					src="assets/images/game-icons/2048.png"
-					alt="2048"
-					href="games/2048/2048.html" />
-				<h3>game 5</h3>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id
-					sollicitudin velit. Maecenas dignissim convallis massa et aliquam.
-					Fusce mauris.
-				</p>
-			</div>
-			<div class="game-card">
-				<img
-					src="assets/images/game-icons/2048.png"
-					alt="2048"
-					href="games/2048/2048.html" />
-				<h3>game 6</h3>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id
-					sollicitudin velit. Maecenas dignissim convallis massa et aliquam.
-					Fusce mauris.
-				</p>
-			</div>
-			<div class="game-card">
-				<img
-					src="assets/images/game-icons/2048.png"
-					alt="2048"
-					href="games/2048/2048.html" />
-				<h3>game 7</h3>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id
-					sollicitudin velit. Maecenas dignissim convallis massa et aliquam.
-					Fusce mauris.
-				</p>
-			</div>
-			<div class="game-card">
-				<img
-					src="assets/images/game-icons/2048.png"
-					alt="2048"
-					href="games/2048/2048.html" />
-				<h3>game 8</h3>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id
-					sollicitudin velit. Maecenas dignissim convallis massa et aliquam.
-					Fusce mauris.
-				</p>
-			</div>
-			<div class="game-card">
-				<img
-					src="assets/images/game-icons/2048.png"
-					alt="2048"
-					href="games/2048/2048.html" />
-				<h3>game 9</h3>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id
-					sollicitudin velit. Maecenas dignissim convallis massa et aliquam.
-					Fusce mauris.
-				</p>
-			</div>
-			<div class="game-card">
-				<img
-					src="assets/images/game-icons/2048.png"
-					alt="2048"
-					href="games/2048/2048.html" />
-				<h3>game 10</h3>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id
-					sollicitudin velit. Maecenas dignissim convallis massa et aliquam.
-					Fusce mauris.
-				</p>
+				<h2>Slope</h2>			
 			</div>
 		</div>
 		<div class="taskbar">
 			<div class="taskbar-container">
 				<a href="index.html" class="taskbar-button">
-					<i class="fi fi-rr-home"></i>
+					<i data-lucide="house"></i>
 					Home
 				</a>
 				<a href="proxy.html" class="taskbar-button">
-					<i class="fi fi-sr-site-alt"></i>
+					<i data-lucide="globe"></i>
 					Proxy
 				</a>
 				<a href="games.html" class="taskbar-button">
-					<i class="fi fi-rr-console-controller"></i>
+					<i data-lucide="gamepad2"></i>
 					Games
 				</a>
 				<a href="tools.html" class="taskbar-button">
-					<i class="fi fi-rs-tools"></i>
+					<i data-lucide="hammer"></i>  
 					Tools
 				</a>
 			</div>
 		</div>
+		<script src="https://unpkg.com/lucide@latest"></script>
+  		<script>
+    		lucide.createIcons();
+  		</script>
 	</body>
 </html>
